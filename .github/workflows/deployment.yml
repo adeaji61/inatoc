@@ -22,18 +22,26 @@ jobs:
     
     environment: staging
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo "Hello, world!"
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Replace values in .env.example
         env:
-          APP_NAME: ${{ secrets.APP_NAME }}
+          APP_URL: ${{ secrets.APP_URL }}
+          VAULT_URL: ${{ secrets.VAULT_URL }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+          VAULT_VERSION: ${{ secrets.VAULT_VERSION }}
+          VAULT_PATH: ${{ secrets.VAULT_PATH }}
+          DOMAIN_REGISTRY: ${{ secrets.DOMAIN_REGISTRY }}
+          USERNAME_REGISTRY: ${{ secrets.USERNAME_REGISTRY }}
+          PASSWORD_REGISTRY: ${{ secrets.PASSWORD_REGISTRY }}
         run: |
-          echo "APP_NAME: $APP_NAME"
+          echo "APP_URL: $APP_URL"
+          echo "VAULT_URL: $VAULT_URL"
+          echo "VAULT_TOKEN: $VAULT_TOKEN"
+          echo "VAULT_VERSION: $VAULT_VERSION"
+          echo "VAULT_PATH: $VAULT_PATH"
+          echo "DOMAIN_REGISTRY: $DOMAIN_REGISTRY"
+          echo "USERNAME_REGISTRY: $USERNAME_REGISTRY"
+          echo "PASSWORD_REGISTRY: $PASSWORD_REGISTRY"
