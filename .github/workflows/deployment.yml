@@ -4,23 +4,22 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches:
+      - main
+    types:
+      - closed
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     
-    environment: staging
+    environment: production
 
     steps:
       - name: Checkout repository
@@ -28,14 +27,14 @@ jobs:
 
       - name: Replace values in .env.example
         env:
-          APP_URL: ${{ secrets.APP_URL }}
-          VAULT_URL: ${{ secrets.VAULT_URL }}
-          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
-          VAULT_VERSION: ${{ secrets.VAULT_VERSION }}
-          VAULT_PATH: ${{ secrets.VAULT_PATH }}
-          DOMAIN_REGISTRY: ${{ secrets.DOMAIN_REGISTRY }}
-          USERNAME_REGISTRY: ${{ secrets.USERNAME_REGISTRY }}
-          PASSWORD_REGISTRY: ${{ secrets.PASSWORD_REGISTRY }}
+          APP_URL: ${{ vars.APP_URL }}
+          VAULT_URL: ${{ vars.VAULT_URL }}
+          VAULT_TOKEN: ${{ vars.VAULT_TOKEN }}
+          VAULT_VERSION: ${{ vars.VAULT_VERSION }}
+          VAULT_PATH: ${{ vars.VAULT_PATH }}
+          DOMAIN_REGISTRY: ${{ vars.DOMAIN_REGISTRY }}
+          USERNAME_REGISTRY: ${{ vars.USERNAME_REGISTRY }}
+          PASSWORD_REGISTRY: ${{ vars.PASSWORD_REGISTRY }}
         run: |
           echo "APP_URL: $APP_URL"
           echo "VAULT_URL: $VAULT_URL"
